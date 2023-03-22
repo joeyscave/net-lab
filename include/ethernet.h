@@ -3,7 +3,7 @@
 
 #include "net.h"
 
-#define ETHERNET_MIN_TRANSPORT_UNIT 46 //以太网最小传输单元
+#define ETHERNET_MIN_TRANSPORT_UNIT 46 // 以太网最小传输单元
 
 #pragma pack(1)
 
@@ -18,5 +18,6 @@ void ethernet_init();
 void ethernet_in(buf_t *buf);
 void ethernet_out(buf_t *buf, const uint8_t *mac, net_protocol_t protocol);
 void ethernet_poll();
-static const uint8_t ether_broadcast_mac[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; //以太网广播mac地址
+static const uint8_t ether_broadcast_mac[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; // 以太网广播mac地址
+static const uint8_t ether_local_mac[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};     // 协议栈虚拟网卡mac地址
 #endif
