@@ -1,2 +1,4 @@
 build/
 testing/
+Testing/
+.vscode/
