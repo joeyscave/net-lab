@@ -3,7 +3,7 @@
 #include <string.h>
 /**
  * @brief ip转字符串
- * 
+ *
  * @param ip ip地址
  * @return char* 生成的字符串
  */
@@ -16,7 +16,7 @@ char *iptos(uint8_t *ip)
 
 /**
  * @brief mac转字符串
- * 
+ *
  * @param mac mac地址
  * @return char* 生成的字符串
  */
@@ -29,7 +29,7 @@ char *mactos(uint8_t *mac)
 
 /**
  * @brief 时间戳转字符串
- * 
+ *
  * @param timestamp 时间戳
  * @return char* 生成的字符串
  */
@@ -46,7 +46,7 @@ char *timetos(time_t timestamp)
 
 /**
  * @brief ip前缀匹配
- * 
+ *
  * @param ipa 第一个ip
  * @param ipb 第二个ip
  * @return uint8_t 两个ip相同的前缀长度
@@ -70,12 +70,36 @@ uint8_t ip_prefix_match(uint8_t *ipa, uint8_t *ipb)
 
 /**
  * @brief 计算16位校验和
- * 
+ *
  * @param buf 要计算的数据包
  * @param len 要计算的长度
  * @return uint16_t 校验和
  */
 uint16_t checksum16(uint16_t *data, size_t len)
 {
-    // TO-DO
+    // 加法结果需要用32位数来保存
+    uint32_t check_sum = 0;
+    // 辅助判断进位
+    const uint16_t carry_set = 0xffff;
+
+    // 每16bit组成一个数相加
+    while (len > 1)
+    {
+        check_sum += *data;
+        data++;
+        len -= sizeof(uint16_t);
+        // 若最高位有进位则加到末尾
+        if (check_sum > carry_set)
+            check_sum = (check_sum >> 16) + ((check_sum << 16) >> 16);
+    }
+
+    // 如果最后还剩8bit(1字节)要加上
+    if (len != 0)
+    {
+        check_sum += *data >> 8;
+        if (check_sum > carry_set)
+            check_sum = (check_sum >> 16) + ((check_sum << 16) >> 16);
+    }
+
+    return ~check_sum;
 }
